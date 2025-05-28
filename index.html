@@ -7,105 +7,117 @@
   <!-- Anime.js CDN -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" defer></script>
   <style>
-    /* Reset & basic styling */
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body { font-family: Arial, sans-serif; color: #ddd; background: #121212; line-height: 1.6; overflow-x: hidden; position: relative; }
+    /* Reset & base */
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:Arial,Helvetica,sans-serif;color:#ddd;background:#121212;line-height:1.6;overflow-x:hidden;position:relative}
 
-    /* Animated blob background */
-    #blob-bg { position: fixed; inset: 0; overflow: hidden; z-index: -1; }
-    .blob { position: absolute; width: 40vw; height: 40vw; filter: blur(120px); animation: moveBlob 20s ease-in-out infinite; }
-    .blob:nth-child(1) { background: radial-gradient(circle at 30% 30%, rgba(72,61,139,.7), transparent 70%); animation-duration: 22s; }
-    .blob:nth-child(2) { background: radial-gradient(circle at 70% 50%, rgba(0,128,128,.7), transparent 70%); animation-duration: 24s; }
-    .blob:nth-child(3) { background: radial-gradient(circle at 40% 80%, rgba(25,25,112,.7), transparent 70%); animation-duration: 26s; }
-    @keyframes moveBlob { 0%,100%{transform:translate(0,0)scale(1)}33%{transform:translate(20vw,-10vh)scale(1.3)}66%{transform:translate(-15vw,15vh)scale(.9)} }
+    /* Background blobs */
+    #blob-bg{position:fixed;inset:0;overflow:hidden;z-index:-1}
+    .blob{position:absolute;width:40vw;height:40vw;filter:blur(120px);animation:moveBlob 20s ease-in-out infinite}
+    .blob:nth-child(1){background:radial-gradient(circle at 30% 30%,rgba(72,61,139,.7),transparent 70%);animation-duration:22s}
+    .blob:nth-child(2){background:radial-gradient(circle at 70% 50%,rgba(0,128,128,.7),transparent 70%);animation-duration:24s}
+    .blob:nth-child(3){background:radial-gradient(circle at 40% 80%,rgba(25,25,112,.7),transparent 70%);animation-duration:26s}
+    @keyframes moveBlob{0%,100%{transform:translate(0,0)scale(1)}33%{transform:translate(20vw,-10vh)scale(1.3)}66%{transform:translate(-15vw,15vh)scale(.9)}}
 
     /* Hero */
-    header { height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
-    h1 { font-size: 4rem; text-transform: uppercase; letter-spacing: .15em; overflow: hidden; color: #fff; }
-    h1 .letter { display: inline-block; transform: translateY(100%); }
-    #tagline { margin-top: 1rem; font-size: 1.25rem; opacity: 0; color: #ccc; }
-    .btn { margin-top: 2rem; padding: .75rem 1.75rem; font-size: 1rem; background: rgba(255,255,255,.1); color: #fff; border: 1px solid #555; cursor: pointer; opacity: 0; border-radius: .5rem; backdrop-filter: blur(5px); }
+    header{height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+    h1{font-size:4rem;text-transform:uppercase;letter-spacing:.15em;overflow:hidden;color:#fff}
+    h1 .letter{display:inline-block;transform:translateY(100%)}
+    #tagline{margin-top:1rem;font-size:1.25rem;opacity:0;color:#ccc}
+    .btn{margin-top:2rem;padding:.75rem 1.75rem;font-size:1rem;background:rgba(255,255,255,.1);color:#fff;border:1px solid #555;cursor:pointer;opacity:0;border-radius:.5rem;backdrop-filter:blur(5px)}
 
-    /* Projects grid */
-    section.projects { padding: 4rem 1rem; background: #1e1e1e; }
-    section.projects h2 { color: #fff; margin-bottom: 2rem; text-align: center; font-size: 2rem; }
-    .project-list { display: grid; grid-template-columns: repeat(auto-fill,minmax(280px,1fr)); gap: 2rem; grid-auto-rows: 1fr; }
-    .project-card { padding: 1.5rem; border-radius: .5rem; box-shadow: 0 4px 6px rgba(0,0,0,.5); opacity: 0; transform: translateY(50px); display:flex; flex-direction:column; min-height: 220px; }
-    .project-card h3 { margin-bottom: .5rem; color: #fff; font-size: 1.2rem; word-break: break-word; }
-    .project-card .desc { color: #ccc; font-size: .95rem; margin-bottom: .75rem; flex-grow:1; }
-    .project-card .meta { color: #888; font-size: .8rem; margin-bottom: .75rem; }
-    .project-card a { color: #4dc0b5; text-decoration: none; font-weight: bold; align-self:flex-start; }
+    /* Projects */
+    section.projects{padding:4rem 1rem;background:#1e1e1e}
+    section.projects h2{color:#fff;margin-bottom:2rem;text-align:center;font-size:2rem}
+    .project-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:2rem;grid-auto-rows:1fr;perspective:800px}
+    .project-card{padding:1.5rem;border-radius:.75rem;box-shadow:0 4px 8px rgba(0,0,0,.45);opacity:0;transform:translateY(50px);display:flex;flex-direction:column;min-height:240px;background-size:200% 200%;animation:gradientShift 8s ease infinite alternate;transition:transform .3s ease,box-shadow .3s ease;transform-style:preserve-3d}
+    .project-card:hover{box-shadow:0 12px 20px rgba(0,0,0,.6)}
+    .project-card h3{margin-bottom:.5rem;color:#fff;font-size:1.25rem;word-break:break-word;transform:translateZ(20px)}
+    .project-card .desc{color:#ccc;font-size:.95rem;margin-bottom:.75rem;flex-grow:1;transform:translateZ(15px)}
+    .project-card .meta{color:#888;font-size:.8rem;margin-bottom:.75rem;transform:translateZ(10px)}
+    .project-card a{color:#4dc0b5;text-decoration:none;font-weight:bold;align-self:flex-start;transform:translateZ(15px)}
+
+    @keyframes gradientShift{0%{background-position:0% 0%}100%{background-position:100% 100%}}
   </style>
 </head>
 <body>
-  <!-- Blob Background -->
+  <!-- Blobs -->
   <div id="blob-bg">
     <div class="blob" style="top:5%;left:15%"></div>
     <div class="blob" style="top:60%;left:75%"></div>
     <div class="blob" style="top:35%;left:50%"></div>
   </div>
 
+  <!-- Hero -->
   <header>
     <h1 id="site-title">cs-util-com</h1>
     <p id="tagline">Showcasing coding projects from GitHub</p>
     <button class="btn" id="view-projects">View Projects</button>
   </header>
 
+  <!-- Projects -->
   <section class="projects" id="projects">
     <h2>Projects</h2>
     <div class="project-list" id="project-list"></div>
   </section>
 
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      // Hero text animation
-      const title = document.getElementById('site-title');
-      title.innerHTML = [...title.textContent.trim()].map(c=>`<span class="letter">${c}</span>`).join('');
-      anime.timeline({ loop: false })
-        .add({ targets: '#site-title .letter', translateY: ['100%', '0%'], easing: 'easeOutExpo', duration: 800, delay: anime.stagger(50) })
-        .add({ targets: '#tagline', opacity: [0, 1], translateY: [20, 0], easing: 'easeOutExpo', duration: 600 }, '-=400')
-        .add({ targets: '.btn', opacity: [0, 1], scale: [0.8, 1], easing: 'easeOutBack', duration: 600 }, '-=400');
+    document.addEventListener('DOMContentLoaded',()=>{
+      /* Hero animation */
+      const title=document.getElementById('site-title');
+      title.innerHTML=[...title.textContent.trim()].map(c=>`<span class="letter">${c}</span>`).join('');
+      anime.timeline({loop:false})
+        .add({targets:'#site-title .letter',translateY:['100%','0%'],easing:'easeOutExpo',duration:800,delay:anime.stagger(50)})
+        .add({targets:'#tagline',opacity:[0,1],translateY:[20,0],easing:'easeOutExpo',duration:600},'-=400')
+        .add({targets:'.btn',opacity:[0,1],scale:[.8,1],easing:'easeOutBack',duration:600},'-=400');
 
-      // Fetch GitHub repos with randomized tile colors
+      /* Fetch repos */
       fetch('https://api.github.com/users/cs-util-com/repos?per_page=100&sort=updated')
-        .then(r => r.json())
-        .then(repos => {
-          const list = document.getElementById('project-list');
-          const dateOpts = { year: 'numeric', month: 'short', day: 'numeric' };
-          repos.forEach(repo => {
-            const card = document.createElement('div');
-            card.className = 'project-card';
-            // Random background hue
-            const hue = Math.floor(Math.random() * 360);
-            card.style.background = `hsla(${hue}, 50%, 20%, 0.3)`;
-            const descHTML = repo.description ? `<p class="desc">${repo.description}</p>` : '';
-            const metaHTML = `<p class="meta">Created: ${new Date(repo.created_at).toLocaleDateString('en-US', dateOpts)} • Updated: ${new Date(repo.updated_at).toLocaleDateString('en-US', dateOpts)}</p>`;
-            card.innerHTML = `
-              <h3>${repo.name}</h3>
-              ${descHTML}
-              ${metaHTML}
-              <a href="${repo.html_url}" target="_blank" rel="noopener">GitHub ↗</a>
-            `;
+        .then(r=>r.json())
+        .then(repos=>{
+          const list=document.getElementById('project-list');
+          const dateOpts={year:'numeric',month:'short',day:'numeric'};
+          repos.forEach(repo=>{
+            const card=document.createElement('div');
+            card.className='project-card';
+            // Random gradient colors for depth
+            const hue1=Math.floor(Math.random()*360);
+            const hue2=(hue1+40)%360;
+            card.style.background=`linear-gradient(135deg,hsla(${hue1},55%,25%,0.35),hsla(${hue2},60%,22%,0.35))`;
+            card.innerHTML=`<h3>${repo.name}</h3>
+              ${repo.description?`<p class="desc">${repo.description}</p>`:''}
+              <p class="meta">Created: ${new Date(repo.created_at).toLocaleDateString('en-US',dateOpts)} • Updated: ${new Date(repo.updated_at).toLocaleDateString('en-US',dateOpts)}</p>
+              <a href="${repo.html_url}" target="_blank" rel="noopener">GitHub ↗</a>`;
             list.append(card);
             observer.observe(card);
+            addTiltEffect(card);
           });
-        })
-        .catch(err => console.error(err));
+        }).catch(console.error);
 
-      // Card reveal
-      const observer = new IntersectionObserver(entries => {
-        entries.forEach(e => {
-          if (e.isIntersecting) {
-            anime({ targets: e.target, opacity: [0, 1], translateY: [50, 0], easing: 'easeOutExpo', duration: 800 });
-            observer.unobserve(e.target);
-          }
+      /* Intersection reveal */
+      const observer=new IntersectionObserver(entries=>{
+        entries.forEach(e=>{
+          if(e.isIntersecting){anime({targets:e.target,opacity:[0,1],translateY:[50,0],easing:'easeOutExpo',duration:800});observer.unobserve(e.target);} });
+      },{threshold:.2});
+
+      /* Smooth scroll */
+      document.getElementById('view-projects').addEventListener('click',()=>document.getElementById('projects').scrollIntoView({behavior:'smooth'}));
+
+      /* 3D tilt */
+      function addTiltEffect(card){
+        const damp=15; // lower = more tilt
+        card.addEventListener('mousemove',e=>{
+          const rect=card.getBoundingClientRect();
+          const x=e.clientX-rect.left;
+          const y=e.clientY-rect.top;
+          const rx=-(y-rect.height/2)/rect.height*damp;
+          const ry=(x-rect.width/2)/rect.width*damp;
+          card.style.transform=`rotateX(${rx}deg) rotateY(${ry}deg)`;
         });
-      }, { threshold: 0.2 });
-
-      // Smooth scroll
-      document.getElementById('view-projects').addEventListener('click', () =>
-        document.getElementById('projects').scrollIntoView({ behavior: 'smooth' })
-      );
+        card.addEventListener('mouseleave',()=>{
+          anime({targets:card,rotateX:0,rotateY:0,duration:600,easing:'easeOutElastic(1, .5)'});
+        });
+      }
     });
   </script>
 </body>
