@@ -1,147 +1,105 @@
-<!-- User Stories & Requirements for the code below:
-
-- This is a template for a single-page HTML web app.
-- A monospace font should be used.
-- No backend; all data is stored locally.
-
-Main user stories:
-- ...
-
-Keep this comment block in the code.
-Simplify the code if possible (without removing the functionality described above). 
-You MUST keep all comments in the code below, even if you think they are redundant.
-Always respond with the full new html file (including these comments here), 
-additional explanations what you change are nice to have but not necessary. 
--->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Decoupled Modules Example with Person Class</title>
-  <!-- Favicon: A white box --> <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' fill='%23fff'/%3E%3C/svg%3E" type="image/svg+xml">
-  <!-- Added Tailwind CSS via CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
+  <title>cs-util-com Projects</title>
+  <!-- Anime.js CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" defer></script>
   <style>
-    @view-transition {
-      navigation: auto;
-    }
-    
-    nav a[aria-current="page"]:after {
-      border-color: white;
-      view-transition-name: posts-nav;
-    }
-    
-    /* Old stuff going out */
-    ::view-transition-old(posts-nav) {
-      animation: fade 0.2s linear forwards;
-      height: 100%;
-    }
-    
-    /* New stuff coming in */
-    ::view-transition-new(posts-nav) {
-      animation: fade 0.3s linear reverse;
-      height: 100%;
-    }
-    
-    @keyframes fade {
-      from { opacity: 1; }
-      to { opacity: 0; }
-    }
+    /* Reset & basic styling */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: Arial, sans-serif; color: #333; line-height: 1.6; overflow-x: hidden; }
+    header { height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; background: #f5f5f5; }
+    h1 { font-size: 4rem; text-transform: uppercase; letter-spacing: .2em; overflow: hidden; }
+    h1 .letter { display: inline-block; transform: translateY(100%); }
+    p { margin-top: 1rem; font-size: 1.25rem; opacity: 0; }
+    .btn { margin-top: 2rem; padding: .75rem 1.5rem; font-size: 1rem; background: #007bff; color: #fff; border: none; cursor: pointer; opacity: 0; }
+    section.projects { padding: 4rem 1rem; background: #fff; }
+    .project-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; }
+    .project-card { background: #fafafa; padding: 1.5rem; border-radius: .5rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); opacity: 0; transform: translateY(50px); }
+    .project-card h3 { margin-bottom: .5rem; }
+    .project-card a { color: #007bff; text-decoration: none; }
   </style>
-  <script>
-    // Only use if browser supports View Transitions
-    if (document.startViewTransition) {
-      window.addEventListener('click', (e) => {
-        // Only handle internal links
-        if (e.target.tagName === 'A' && e.target.origin === window.location.origin) {
-          e.preventDefault();
-          document.startViewTransition(() => {
-            window.location.href = e.target.href;
-          });
-        }
-      });
-    }
-  </script>
 </head>
-<body class="font-mono p-8 bg-gray-50">
-  <div class="max-w-4xl mx-auto">
-    <header class="mb-8">
-      <h1 class="text-3xl font-bold text-blue-600 mb-4">Template Web App</h1>
-      <nav class="bg-blue-600 text-white p-4 rounded-lg mb-4">
-        <a href="index.html" class="mr-6 hover:underline font-bold relative" aria-current="page">
-          Home
-          <span class="absolute bottom-0 left-0 w-full h-0.5 bg-white"></span>
-        </a>
-        <a href="features.html" class="mr-6 hover:underline">Features</a>
-        <a href="about.html" class="hover:underline">About</a>
-      </nav>
-      <div class="bg-blue-100 border-l-4 border-blue-500 p-4 mb-6">
-        <p class="text-sm text-blue-700">This is a Tailwind CSS demonstration with modular JavaScript.</p>
-      </div>
-    </header>
-    
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-      <!-- Card 1 -->
-      <div class="bg-white p-6 rounded-lg shadow-md">
-        <h2 class="text-xl font-bold mb-4 text-gray-800">Greeting Card</h2>
-        <p class="text-gray-600 mb-4">Click the button below to greet the person.</p>
-        <button id="greetBtn" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition duration-300">
-          Greet
-        </button>
-      </div>
-      
-      <!-- Card 2 -->
-      <div class="bg-white p-6 rounded-lg shadow-md">
-        <h2 class="text-xl font-bold mb-4 text-gray-800">Tailwind Features</h2>
-        <ul class="list-disc pl-5 space-y-2 text-gray-600">
-          <li>Responsive design with <span class="font-bold text-blue-500">breakpoints</span></li>
-          <li>Utility-first CSS framework</li>
-          <li>Customizable with configuration</li>
-        </ul>
-        <div class="mt-4">
-          <div class="flex gap-2">
-            <span class="bg-red-200 text-red-800 text-xs p-1 rounded">Tag</span>
-            <span class="bg-green-200 text-green-800 text-xs p-1 rounded">Utility</span>
-            <span class="bg-yellow-200 text-yellow-800 text-xs p-1 rounded">Responsive</span>
-          </div>
-        </div>
-      </div>
-    </div>
-    
-    <div class="bg-white p-6 rounded-lg shadow">
-      <h2 class="text-xl font-bold mb-4 text-gray-800">Interactive Components</h2>
-      <div class="mb-4">
-        <label class="block text-gray-700 text-sm font-bold mb-2" for="username">
-          Username
-        </label>
-        <input class="w-full p-2 border rounded text-gray-700 focus:outline-none focus:shadow-outline" id="username" type="text" placeholder="Username">
-      </div>
-      <div class="flex justify-between">
-        <button class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded focus:outline-none transition">
-          Save
-        </button>
-        <button class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none transition">
-          Cancel
-        </button>
-      </div>
-    </div>
-  </div>
-  
-  <!-- Load the main module -->
-  <script type="module">
+<body>
+  <header>
+    <h1 id="site-title">cs-util-com</h1>
+    <p id="tagline">Showcasing coding projects from GitHub</p>
+    <button class="btn" id="view-projects">View Projects</button>
+  </header>
 
-    import { tellBirthday } from './utils.js';
-    import { Person } from './person.js';
+  <section class="projects" id="projects">
+    <h2>Projects</h2>
+    <div class="project-list">
+      <!-- Placeholder cards; will iterate to pull from GitHub -->
+      <div class="project-card"><h3>Project One</h3><p>Short description here.</p><a href="#">View on GitHub</a></div>
+      <div class="project-card"><h3>Project Two</h3><p>Short description here.</p><a href="#">View on GitHub</a></div>
+      <div class="project-card"><h3>Project Three</h3><p>Short description here.</p><a href="#">View on GitHub</a></div>
+    </div>
+  </section>
 
-    // Create a new Person instance with values defined in the HTML.
-    const person = new Person('Alice', 40);
-    document.getElementById('greetBtn').addEventListener('click', () => {
-      alert(tellBirthday(person));
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Split title into letters
+      const title = document.querySelector('#site-title');
+      const text = title.textContent.trim().split('');
+      title.textContent = '';
+      text.forEach(char => {
+        const span = document.createElement('span');
+        span.textContent = char;
+        span.classList.add('letter');
+        title.append(span);
+      });
+
+      // Header animations
+      anime.timeline({ loop: false })
+        .add({
+          targets: '#site-title .letter',
+          translateY: ['100%', '0%'],
+          easing: 'easeOutExpo',
+          duration: 800,
+          delay: anime.stagger(50)
+        })
+        .add({
+          targets: '#tagline',
+          opacity: [0, 1],
+          translateY: [20, 0],
+          easing: 'easeOutExpo',
+          duration: 600
+        }, '-=400')
+        .add({
+          targets: '.btn',
+          opacity: [0, 1],
+          scale: [0.8, 1],
+          easing: 'easeOutBack',
+          duration: 600
+        }, '-=400');
+
+      // Scroll animation for project cards
+      const cards = document.querySelectorAll('.project-card');
+      const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            anime({
+              targets: entry.target,
+              opacity: [0, 1],
+              translateY: [50, 0],
+              easing: 'easeOutExpo',
+              duration: 800
+            });
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.2 });
+
+      cards.forEach(card => observer.observe(card));
+
+      // Scroll to projects on button click
+      document.getElementById('view-projects').addEventListener('click', () => {
+        document.getElementById('projects').scrollIntoView({ behavior: 'smooth' });
+      });
     });
-
   </script>
-
 </body>
 </html>
