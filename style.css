@@ -6,6 +6,108 @@ body, html {
   color: #e0e0e0;
   font-family: 'Open Sans', sans-serif;
   overflow-x: hidden; /* No horizontal scroll */
+  position: relative;
+}
+
+/* Floating Background Blobs Container */
+.floating-blobs {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.floating-blob {
+  position: absolute;
+  border-radius: 50%;
+  /* filter: blur(20px); */
+  opacity: 1;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+
+.blob-1 {
+  width: 300px;
+  height: 300px;
+  background: linear-gradient(45deg, #64B5F6, #2196F3);
+  top: 20%;
+  left: 20%;
+  animation: float-1 25s infinite;
+  border: 2px solid rgba(255,255,255,0.2);
+}
+
+.blob-2 {
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(156, 39, 176, 0.8) 0%, rgba(156, 39, 176, 0.2) 70%);
+  top: 60%;
+  right: 10%;
+  animation: float-2 30s infinite;
+}
+
+.blob-3 {
+  width: 250px;
+  height: 250px;
+  background: radial-gradient(circle, rgba(26, 188, 156, 0.9) 0%, rgba(26, 188, 156, 0.3) 70%);
+  bottom: 20%;
+  left: 20%;
+  animation: float-3 35s infinite;
+}
+
+.blob-4 {
+  width: 350px;
+  height: 350px;
+  background: radial-gradient(circle, rgba(255, 193, 7, 0.7) 0%, rgba(255, 193, 7, 0.2) 70%);
+  top: 40%;
+  left: 50%;
+  animation: float-4 28s infinite;
+}
+
+.blob-5 {
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(circle, rgba(233, 30, 99, 0.8) 0%, rgba(233, 30, 99, 0.3) 70%);
+  top: 80%;
+  right: 30%;
+  animation: float-5 32s infinite;
+}
+
+@keyframes float-1 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  25% { transform: translate(100px, -50px) scale(1.1); }
+  50% { transform: translate(200px, 100px) scale(0.9); }
+  75% { transform: translate(-50px, 150px) scale(1.2); }
+}
+
+@keyframes float-2 {
+  0%, 100% { transform: translate(0, 0) scale(1) rotate(0deg); }
+  33% { transform: translate(-150px, -100px) scale(1.3) rotate(120deg); }
+  66% { transform: translate(-200px, 50px) scale(0.8) rotate(240deg); }
+}
+
+@keyframes float-3 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  20% { transform: translate(80px, -120px) scale(1.1); }
+  40% { transform: translate(-100px, -80px) scale(0.9); }
+  60% { transform: translate(150px, 60px) scale(1.2); }
+  80% { transform: translate(-80px, 100px) scale(1.0); }
+}
+
+@keyframes float-4 {
+  0%, 100% { transform: translate(0, 0) scale(1) rotate(0deg); }
+  50% { transform: translate(-300px, -200px) scale(1.4) rotate(180deg); }
+}
+
+@keyframes float-5 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  25% { transform: translate(-120px, -80px) scale(1.3); }
+  50% { transform: translate(80px, -150px) scale(0.7); }
+  75% { transform: translate(-200px, 100px) scale(1.1); }
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -34,6 +136,42 @@ a:hover {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+  
+  .floating-blob, .hero-section::before, .hero-section::after, .animated-blob {
+    animation: none !important;
+    opacity: 0.2 !important;
+  }
+}
+
+/* Interactive blob effects */
+.projects-section:hover ~ .floating-blobs .blob-1,
+.projects-section:hover ~ .floating-blobs .blob-3 {
+  animation-duration: 15s;
+  opacity: 0.6;
+}
+
+.blog-section:hover ~ .floating-blobs .blob-2,
+.blog-section:hover ~ .floating-blobs .blob-5 {
+  animation-duration: 18s;
+  opacity: 0.7;
+}
+
+/* Mobile responsiveness for blobs */
+@media (max-width: 768px) {
+  .floating-blob {
+    filter: blur(60px);
+    opacity: 0.3;
+  }
+  
+  .blob-1, .blob-2, .blob-3, .blob-4, .blob-5 {
+    width: 150px;
+    height: 150px;
+  }
+  
+  .hero-section::before, .hero-section::after, .animated-blob {
+    filter: blur(80px);
+    opacity: 0.4;
   }
 }
 
@@ -68,6 +206,8 @@ body {
 section {
   padding: 60px 0;
   min-height: 50vh; /* Ensure sections have some height */
+  position: relative;
+  z-index: 10;
 }
 
 /* Fonts from Google Fonts */
@@ -83,6 +223,7 @@ section {
   text-align: center;
   position: relative; /* For animated background positioning */
   overflow: hidden; /* Ensure blobs don't cause scroll */
+  z-index: 10;
 }
 
 .hero-title span {
@@ -128,57 +269,62 @@ section {
   box-shadow: 0 4px 12px rgba(0,0,0,.5);
 }
 
-/* Animated Background - Blurred Blobs */
+/* Animated Background - Blurred Blobs (Hero Section) */
 .hero-section::before, .hero-section::after, .animated-blob {
     content: '';
     position: absolute;
     border-radius: 50%;
-    filter: blur(120px);
+    filter: blur(100px);
     z-index: -1;
     will-change: transform, opacity; /* Performance */
 }
 
-.hero-section::before { /* Violet blob */
-    width: 350px;
-    height: 350px;
-    background: radial-gradient(circle, rgba(138,43,226,0.3) 0%, rgba(138,43,226,0) 70%);
-    animation: animate-blob-1 30s infinite linear alternate;
+.hero-section::before { /* Enhanced violet blob */
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(138,43,226,0.4) 0%, rgba(138,43,226,0.1) 50%, rgba(138,43,226,0) 70%);
+    animation: animate-blob-1 25s infinite ease-in-out alternate;
 }
 
-.hero-section::after { /* Teal blob */
-    width: 300px;
-    height: 300px;
-    background: radial-gradient(circle, rgba(0,128,128,0.3) 0%, rgba(0,128,128,0) 70%);
-    animation: animate-blob-2 35s infinite linear alternate;
+.hero-section::after { /* Enhanced teal blob */
+    width: 350px;
+    height: 350px;
+    background: radial-gradient(circle, rgba(0,188,212,0.4) 0%, rgba(0,188,212,0.1) 50%, rgba(0,188,212,0) 70%);
+    animation: animate-blob-2 30s infinite ease-in-out alternate;
 }
 
 .animated-blob {
-    width: 400px;
-    height: 400px;
-    background: radial-gradient(circle, rgba(75,0,130,0.3) 0%, rgba(75,0,130,0) 70%); /* Indigo blob */
-    animation: animate-blob-3 40s infinite linear alternate;
-    /* This one will be added via JS to demonstrate adding more blobs if needed */
+    width: 450px;
+    height: 450px;
+    background: radial-gradient(circle, rgba(75,0,130,0.4) 0%, rgba(75,0,130,0.1) 50%, rgba(75,0,130,0) 70%); /* Enhanced indigo blob */
+    animation: animate-blob-3 35s infinite ease-in-out alternate;
 }
 
 @keyframes animate-blob-1 {
-    0%, 100% { transform: translate(-20vw, -20vh) scale(1); opacity: 0.6; }
-    50% { transform: translate(20vw, 20vh) scale(1.2); opacity: 0.8; }
+    0% { transform: translate(-25vw, -25vh) scale(0.8) rotate(0deg); opacity: 0.3; }
+    25% { transform: translate(-10vw, 10vh) scale(1.2) rotate(90deg); opacity: 0.6; }
+    50% { transform: translate(20vw, 20vh) scale(1.0) rotate(180deg); opacity: 0.8; }
+    75% { transform: translate(10vw, -15vh) scale(1.3) rotate(270deg); opacity: 0.5; }
+    100% { transform: translate(-25vw, -25vh) scale(0.8) rotate(360deg); opacity: 0.3; }
 }
 
 @keyframes animate-blob-2 {
-    0%, 100% { transform: translate(30vw, -30vh) scale(0.9); opacity: 0.5;}
-    50% { transform: translate(-10vw, 10vh) scale(1.1); opacity: 0.7; }
+    0% { transform: translate(30vw, -35vh) scale(0.9) rotate(0deg); opacity: 0.4;}
+    33% { transform: translate(-15vw, -10vh) scale(1.1) rotate(120deg); opacity: 0.7; }
+    66% { transform: translate(25vw, 15vh) scale(0.8) rotate(240deg); opacity: 0.6; }
+    100% { transform: translate(30vw, -35vh) scale(0.9) rotate(360deg); opacity: 0.4;}
 }
 
 @keyframes animate-blob-3 {
-    0%, 100% { transform: translate(-15vw, 30vh) scale(1.1); opacity: 0.7;}
-    50% { transform: translate(15vw, -10vh) scale(0.9); opacity: 0.5; }
+    0% { transform: translate(-20vw, 25vh) scale(1.1) rotate(0deg); opacity: 0.5;}
+    20% { transform: translate(5vw, -20vh) scale(0.9) rotate(72deg); opacity: 0.7; }
+    40% { transform: translate(25vw, 10vh) scale(1.2) rotate(144deg); opacity: 0.4; }
+    60% { transform: translate(-10vw, 30vh) scale(0.8) rotate(216deg); opacity: 0.8; }
+    80% { transform: translate(15vw, -10vh) scale(1.0) rotate(288deg); opacity: 0.6; }
+    100% { transform: translate(-20vw, 25vh) scale(1.1) rotate(360deg); opacity: 0.5;}
 }
 
-/* Projects Section */
-.projects-section {
-    background-color: var(--bg); /* Ensure consistent background */
-}
+/* Projects Section - background removed to show floating blobs */
 
 .projects-grid {
   display: grid;
@@ -263,10 +409,7 @@ section {
     z-index: 1;
 }
 
-/* Blog Posts Section */
-.blog-section {
-    background-color: var(--bg);
-}
+/* Blog Posts Section - background removed to show floating blobs */
 
 .blog-posts-list {
   display: flex;
