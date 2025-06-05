@@ -11,6 +11,8 @@
   --easing: cubic-bezier(0.25,0.8,0.25,1);
   --duration: 600ms;
   --hover-duration: 150ms;
+  --blob-blur: 80px;
+  --blob-opacity: 0.1;
 }
 
 body, html {
@@ -33,8 +35,8 @@ body, html {
 .floating-blob {
   position: absolute;
   border-radius: 50%;
-  filter: blur(80px);
-  opacity: 0.4;
+  filter: blur(var(--blob-blur));
+  opacity: var(--blob-opacity);
   animation-timing-function: ease-in-out;
   animation-iteration-count: infinite;
   animation-direction: alternate;
@@ -372,9 +374,8 @@ footer {
 
 @media (max-width: 768px) {
   .floating-blob {
-    filter: blur(100px);
-    opacity: 0.2;
-    width: 150px !important;
-    height: 150px !important;
+    filter: blur(40px);
+    opacity: 0.4;
+    /* retain individual sizes for variation */
   }
 }
