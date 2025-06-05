@@ -1,0 +1,338 @@
+/* Global Styles */
+body, html {
+  margin: 0;
+  padding: 0;
+  background-color: #121212;
+  color: #e0e0e0;
+  font-family: 'Open Sans', sans-serif;
+  overflow-x: hidden; /* No horizontal scroll */
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: #ffffff;
+  font-weight: 600;
+}
+
+a {
+  color: var(--accent, #64B5F6);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Utility Classes */
+.hidden {
+  display: none;
+}
+
+/* Reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* CSS Custom Properties (Styling Tokens from README) */
+:root {
+  --bg: #121212;
+  --card-bg: #1d1d1d;
+  --text: #e0e0e0;
+  --heading: #ffffff;
+  --accent: #64B5F6;
+  --radius: 8px;
+  --shadow: 0 2px 6px rgba(0,0,0,.4);
+  --easing-ease-out: cubic-bezier(0.25,0.8,0.25,1);
+  --duration-entry: 600ms;
+  --duration-hover-lift: 150ms;
+}
+
+/* Global Layout & Theming */
+body {
+  font-weight: 400; /* Open Sans 400 for body text */
+}
+
+/* Responsiveness: Fluid mobile-first design */
+.container {
+  width: 90%;
+  max-width: 1200px; /* Example max-width, can be adjusted */
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Sections */
+section {
+  padding: 60px 0;
+  min-height: 50vh; /* Ensure sections have some height */
+}
+
+/* Fonts from Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap');
+
+/* Hero Section */
+.hero-section {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  position: relative; /* For animated background positioning */
+  overflow: hidden; /* Ensure blobs don't cause scroll */
+}
+
+.hero-title span {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(40px) rotateX(90deg);
+  animation: letter-appear var(--duration-entry) var(--easing-ease-out) forwards;
+}
+
+@keyframes letter-appear {
+  to {
+    opacity: 1;
+    transform: translateY(0) rotateX(0deg);
+  }
+}
+
+.tagline {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fade-slide-up var(--duration-entry) var(--easing-ease-out) forwards;
+  animation-delay: calc(var(--duration-entry) + 50ms * 10); /* Delay after last letter (10 letters in csutil.com) */
+}
+
+.cta-button {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fade-slide-up var(--duration-entry) var(--easing-ease-out) forwards;
+  animation-delay: calc(var(--duration-entry) + 50ms * 10 + 300ms); /* Delay after tagline */
+  padding: 12px 24px;
+  background-color: var(--accent);
+  color: var(--heading);
+  border: none;
+  border-radius: var(--radius);
+  font-size: 1.1em;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform var(--duration-hover-lift) var(--easing-ease-out), box-shadow var(--duration-hover-lift) var(--easing-ease-out);
+  will-change: transform, box-shadow;
+}
+
+.cta-button:hover {
+  transform: translateY(-3px); /* Slight lift on hover */
+  box-shadow: 0 4px 12px rgba(0,0,0,.5);
+}
+
+/* Animated Background - Blurred Blobs */
+.hero-section::before, .hero-section::after, .animated-blob {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(120px);
+    z-index: -1;
+    will-change: transform, opacity; /* Performance */
+}
+
+.hero-section::before { /* Violet blob */
+    width: 350px;
+    height: 350px;
+    background: radial-gradient(circle, rgba(138,43,226,0.3) 0%, rgba(138,43,226,0) 70%);
+    animation: animate-blob-1 30s infinite linear alternate;
+}
+
+.hero-section::after { /* Teal blob */
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, rgba(0,128,128,0.3) 0%, rgba(0,128,128,0) 70%);
+    animation: animate-blob-2 35s infinite linear alternate;
+}
+
+.animated-blob {
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(75,0,130,0.3) 0%, rgba(75,0,130,0) 70%); /* Indigo blob */
+    animation: animate-blob-3 40s infinite linear alternate;
+    /* This one will be added via JS to demonstrate adding more blobs if needed */
+}
+
+@keyframes animate-blob-1 {
+    0%, 100% { transform: translate(-20vw, -20vh) scale(1); opacity: 0.6; }
+    50% { transform: translate(20vw, 20vh) scale(1.2); opacity: 0.8; }
+}
+
+@keyframes animate-blob-2 {
+    0%, 100% { transform: translate(30vw, -30vh) scale(0.9); opacity: 0.5;}
+    50% { transform: translate(-10vw, 10vh) scale(1.1); opacity: 0.7; }
+}
+
+@keyframes animate-blob-3 {
+    0%, 100% { transform: translate(-15vw, 30vh) scale(1.1); opacity: 0.7;}
+    50% { transform: translate(15vw, -10vh) scale(0.9); opacity: 0.5; }
+}
+
+/* Projects Section */
+.projects-section {
+    background-color: var(--bg); /* Ensure consistent background */
+}
+
+.projects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.project-card {
+  background-color: var(--card-bg);
+  border-radius: var(--radius);
+  padding: 20px;
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* For consistent card height */
+  opacity: 0;
+  transform: translateY(50px) rotateX(15deg);
+  transition: opacity var(--duration-entry) var(--easing-ease-out),
+              transform var(--duration-entry) var(--easing-ease-out),
+              box-shadow var(--duration-hover-lift) var(--easing-ease-out);
+  will-change: opacity, transform, box-shadow;
+  position: relative; /* For decorative gradient tiles */
+  overflow: hidden; /* For decorative gradient tiles */
+}
+
+.project-card::before { /* Decorative gradient tile */
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: radial-gradient(circle at 50% 0%, rgba(100, 181, 246, 0.1) 0%, rgba(100, 181, 246, 0) 70%);
+    background-size: 200% 200%;
+    animation: shift-bg-position 20s linear infinite;
+    z-index: 0;
+    opacity: 0.5; /* Subtle effect */
+    will-change: background-position;
+}
+
+@keyframes shift-bg-position {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.project-card.visible {
+  opacity: 1;
+  transform: translateY(0) rotateX(0deg);
+}
+
+.project-card:hover {
+  transform: scale(1.03) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
+  box-shadow: 0 8px 20px rgba(0,0,0,.6);
+}
+
+.project-card h3 {
+  margin-top: 0;
+  color: var(--heading);
+  transform: translateZ(20px); /* Depth effect */
+  position: relative; /* Ensure it's above the ::before pseudo-element */
+  z-index: 1;
+}
+
+.project-card p {
+  margin-bottom: 10px;
+  font-size: 0.9em;
+  transform: translateZ(10px); /* Depth effect */
+  position: relative;
+  z-index: 1;
+}
+
+.project-card .meta {
+  font-size: 0.8em;
+  color: #aaa; /* Lighter text for meta */
+  transform: translateZ(5px); /* Depth effect */
+  position: relative;
+  z-index: 1;
+}
+
+.project-card a {
+    color: var(--accent);
+    font-weight: 600;
+    position: relative;
+    z-index: 1;
+}
+
+/* Blog Posts Section */
+.blog-section {
+    background-color: var(--bg);
+}
+
+.blog-posts-list {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.blog-post-card {
+  background-color: var(--card-bg);
+  border-radius: var(--radius);
+  padding: 20px;
+  box-shadow: var(--shadow);
+  width: 100%;
+  max-width: 480px;
+  transition: transform var(--duration-hover-lift) var(--easing-ease-out), box-shadow var(--duration-hover-lift) var(--easing-ease-out);
+  will-change: transform, box-shadow;
+}
+
+.blog-post-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(0,0,0,.5);
+}
+
+.blog-post-card h3 {
+  margin-top: 0;
+  color: var(--heading);
+}
+
+.blog-post-card .date {
+  font-size: 0.9em;
+  font-style: italic;
+  color: #aaa;
+  margin-bottom: 0;
+}
+
+.blog-post-card a {
+    display: block; /* Make the whole card clickable */
+    text-decoration: none;
+    color: inherit; /* Inherit text color */
+}
+
+.blog-post-card a:hover h3 {
+    text-decoration: underline;
+    color: var(--accent);
+}
+
+/* Error Messages */
+.error-message {
+    color: #ff6b6b; /* A reddish color for errors */
+    text-align: center;
+    padding: 20px;
+    background-color: rgba(255, 107, 107, 0.1);
+    border: 1px solid rgba(255, 107, 107, 0.3);
+    border-radius: var(--radius);
+}
+
+.error-message a {
+    color: #ff6b6b;
+    font-weight: 600;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 20px 0;
+    border-top: 1px solid #333; /* Separator line */
+    margin-top: 40px;
+}

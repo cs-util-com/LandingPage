@@ -1,0 +1,30 @@
+name: Build repo-manifest
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # Required to commit back to the repository
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      
+      - name: Install dependencies
+        run: npm install
+
+      - name: Generate manifest
+        run: node scripts/build-manifest.js
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Pass the GITHUB_TOKEN to the script
+
+      - name: Commit & push repo-manifest.json
+        uses: EndBug/add-and-commit@v9
+        with:
+          add: 'repo-manifest.json'
+          message: 'chore: update repo-manifest [skip ci]'
+          push: true
