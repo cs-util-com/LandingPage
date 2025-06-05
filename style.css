@@ -13,6 +13,13 @@
   --hover-duration: 150ms;
   --blob-blur: 80px;
   --blob-opacity: 0.1;
+  --blob-mobile-blur: 80px;
+  --blob-mobile-opacity: 0.3;
+  --blob1-size: 300px;
+  --blob2-size: 400px;
+  --blob3-size: 250px;
+  --blob4-size: 350px;
+  --blob5-size: 200px;
 }
 
 body, html {
@@ -43,8 +50,8 @@ body, html {
 }
 
 .blob-1 {
-  width: 300px;
-  height: 300px;
+  width: var(--blob1-size);
+  height: var(--blob1-size);
   background: radial-gradient(circle, rgba(100,181,246,0.6) 0%, rgba(33,150,243,0.3) 50%, transparent 80%);
   top: 20%;
   left: 20%;
@@ -52,8 +59,8 @@ body, html {
 }
 
 .blob-2 {
-  width: 400px;
-  height: 400px;
+  width: var(--blob2-size);
+  height: var(--blob2-size);
   background: radial-gradient(circle, rgba(156,39,176,0.5) 0%, rgba(156,39,176,0.2) 50%, transparent 80%);
   top: 60%;
   right: 10%;
@@ -61,8 +68,8 @@ body, html {
 }
 
 .blob-3 {
-  width: 250px;
-  height: 250px;
+  width: var(--blob3-size);
+  height: var(--blob3-size);
   background: radial-gradient(circle, rgba(26,188,156,0.6) 0%, rgba(26,188,156,0.2) 50%, transparent 80%);
   bottom: 20%;
   left: 20%;
@@ -70,8 +77,8 @@ body, html {
 }
 
 .blob-4 {
-  width: 350px;
-  height: 350px;
+  width: var(--blob4-size);
+  height: var(--blob4-size);
   background: radial-gradient(circle, rgba(255,193,7,0.5) 0%, rgba(255,193,7,0.2) 50%, transparent 80%);
   top: 40%;
   left: 50%;
@@ -79,8 +86,8 @@ body, html {
 }
 
 .blob-5 {
-  width: 200px;
-  height: 200px;
+  width: var(--blob5-size);
+  height: var(--blob5-size);
   background: radial-gradient(circle, rgba(233,30,99,0.5) 0%, rgba(233,30,99,0.2) 50%, transparent 80%);
   top: 80%;
   right: 30%;
@@ -374,8 +381,8 @@ footer {
 
 @media (max-width: 768px) {
   .floating-blob {
-    filter: blur(40px);
-    opacity: 0.4;
-    /* retain individual sizes for variation */
+    filter: blur(var(--blob-mobile-blur));
+    opacity: var(--blob-mobile-opacity);
+    /* sizes remain from variables for variation */
   }
 }
