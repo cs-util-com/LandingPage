@@ -97,6 +97,15 @@ document.addEventListener('DOMContentLoaded', () => {
             card.appendChild(description);
             card.appendChild(meta);
             card.appendChild(link);
+            // Add website link if provided in the repo details
+            if (repo.homepage) {
+                const siteLink = document.createElement('a');
+                siteLink.href = repo.homepage;
+                siteLink.target = '_blank';
+                siteLink.rel = 'noopener noreferrer';
+                siteLink.textContent = 'Visit website';
+                card.appendChild(siteLink);
+            }
             projectsGrid.appendChild(card);
         });
 
