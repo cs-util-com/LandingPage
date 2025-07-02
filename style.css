@@ -5,24 +5,29 @@
   --card-bg: #1d1d1d;
   --text: #e0e0e0;
   --heading: #ffffff;
-  --accent: #64B5F6;
+  --accent: #7dadd4;
   --radius: 8px;
   --shadow: 0 2px 6px rgba(0,0,0,.4);
   --easing: cubic-bezier(0.25,0.8,0.25,1);
-  --duration: 600ms;
+  --duration: 1000ms;
   --hover-duration: 150ms;
-  --blob-blur: 80px;
-  --blob-opacity: 0.1;
-  --blob-mobile-blur: 80px;
+  
+  --blob-blur: 280px;
+  --blob-opacity: 0.9;
+  --blob-mobile-blur: 280px;
   --blob-mobile-opacity: 0.3;
-  --blob1-size: 300px;
-  --blob2-size: 400px;
-  --blob3-size: 250px;
-  --blob4-size: 350px;
-  --blob5-size: 200px;
-  --yellow: #EDB74D;
-  --red: #EB6666;
-  --green: #6FB18A;
+
+  --blob1-size: 500px;
+  --blob2-size: 700px;
+  --blob3-size: 550px;
+  --blob4-size: 750px;
+  --blob5-size: 500px;
+
+  --blob-color-1: #144714;
+  --blob-color-2: #0d3a88;
+  --blob-color-3: #005f73;
+  --blob-color-4: #3d003d;
+  --blob-color-5: #032a4c;
 }
 
 body, html {
@@ -59,6 +64,7 @@ body::before {
   position: absolute;
   border-radius: 50%;
   filter: blur(var(--blob-blur));
+  opacity: 0.7;
   animation-timing-function: ease-in-out;
   animation-iteration-count: infinite;
   animation-direction: alternate;
@@ -67,7 +73,7 @@ body::before {
 .blob-1 {
   width: var(--blob1-size);
   height: var(--blob1-size);
-  background-color: var(--yellow);
+  background-color: var(--blob-color-1);
   top: 20%;
   left: 20%;
   animation: float-1 25s infinite;
@@ -76,7 +82,7 @@ body::before {
 .blob-2 {
   width: var(--blob2-size);
   height: var(--blob2-size);
-  background-color: var(--red);
+  background-color: var(--blob-color-2);
   top: 60%;
   right: 10%;
   animation: float-2 30s infinite;
@@ -85,7 +91,7 @@ body::before {
 .blob-3 {
   width: var(--blob3-size);
   height: var(--blob3-size);
-  background-color: var(--green);
+  background-color: var(--blob-color-3);
   bottom: 20%;
   left: 20%;
   animation: float-3 35s infinite;
@@ -94,7 +100,7 @@ body::before {
 .blob-4 {
   width: var(--blob4-size);
   height: var(--blob4-size);
-  background-color: var(--accent);
+  background-color: var(--blob-color-4);
   top: 40%;
   left: 50%;
   animation: float-4 28s infinite;
@@ -103,7 +109,7 @@ body::before {
 .blob-5 {
   width: var(--blob5-size);
   height: var(--blob5-size);
-  background-color: #9c27b0;
+  background-color: var(--blob-color-5);
   top: 80%;
   right: 30%;
   animation: float-5 32s infinite;
