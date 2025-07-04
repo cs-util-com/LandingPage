@@ -299,7 +299,7 @@ section {
 }
 
 .project-card {
-  background: rgba(29, 29, 29, 0.4);
+  background: transparent;
   border-radius: var(--radius);
   padding: 20px;
   display: flex;
@@ -379,7 +379,7 @@ section {
 }
 
 .blog-post-card {
-  background: rgba(29, 29, 29, 0.4);
+  background: transparent;
   border-radius: var(--radius);
   padding: 20px;
   width: 100%;
