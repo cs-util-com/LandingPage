@@ -73,7 +73,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         repos.forEach(repo => {
             const card = document.createElement('div');
-            card.classList.add('project-card');
+            card.classList.add('project-card', 'glass3d');
 
             const title = document.createElement('h3');
             title.textContent = repo.name;
@@ -184,11 +184,12 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         posts.forEach(post => {
-            const card = document.createElement('div');
-            card.classList.add('blog-post-card');
+            const postCard = document.createElement('div');
+            postCard.classList.add('blog-post-card', 'glass3d');
 
             const link = document.createElement('a');
-            link.href = post.download_url || post.path; // Use download_url if available, else path
+            // Use download_url if available, otherwise fallback to html_url or path:
+            link.href = post.download_url || post.html_url || post.path; 
             // For local testing, you might want to link directly to the path if served locally
             // link.href = post.path; 
             // If using GitHub Pages, download_url might be more appropriate or a constructed URL
@@ -207,8 +208,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
             link.appendChild(title);
             link.appendChild(dateDisplay);
-            card.appendChild(link);
-            blogPostsList.appendChild(card);
+            postCard.appendChild(link);
+            blogPostsList.appendChild(postCard);
         });
     }
 

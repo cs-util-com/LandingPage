@@ -223,18 +223,72 @@ section {
   animation-delay: calc(var(--duration) + 800ms);
   padding: 12px 24px;
   background: var(--accent);
-  color: var(--heading);
+  color: var(--heading) !important;
   border: none;
   border-radius: var(--radius);
   font-size: 1.1em;
   font-weight: 600;
   cursor: pointer;
   transition: transform var(--hover-duration) var(--easing), box-shadow var(--hover-duration) var(--easing);
+  position: relative;
+  z-index: 10;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
 }
 
 .cta-button:hover {
   transform: translateY(-3px);
   box-shadow: 0 4px 12px rgba(0,0,0,.5);
+}
+
+/* Special styling for glass button to ensure text visibility */
+.cta-button.glass3d {
+  background: rgba(255, 255, 255, 0.034);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: var(--heading) !important;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.9);
+}
+
+.cta-button.glass3d::before {
+  background: rgba(255, 255, 255, 0.082);
+}
+
+/* Glassmorphism Effect */
+.glass3d {
+  --filter-glass3d: blur(13px) brightness(0.73) saturate(4);
+  --color-glass3d: rgba(255, 255, 255, 0.1);
+  --border-glass3d: 1px solid rgba(255, 255, 255, 0.18);
+  position: relative;
+  z-index: 4;
+  border: var(--border-glass3d);
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+}
+.glass3d::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  overflow: hidden;
+  z-index: -1;
+  -webkit-backdrop-filter: var(--filter-glass3d);
+  backdrop-filter: var(--filter-glass3d);
+  background: var(--color-glass3d);
+}
+.glass3d::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  border-radius: inherit;
+  overflow: hidden;
+  z-index: -1;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 100%);
+}
+.glass3d > * {
+  position: relative;
+  z-index: 6;
 }
 
 /* Projects & Cards */
@@ -245,10 +299,9 @@ section {
 }
 
 .project-card {
-  background: var(--card-bg);
+  background: rgba(29, 29, 29, 0.4);
   border-radius: var(--radius);
   padding: 20px;
-  box-shadow: var(--shadow);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -326,10 +379,9 @@ section {
 }
 
 .blog-post-card {
-  background: var(--card-bg);
+  background: rgba(29, 29, 29, 0.4);
   border-radius: var(--radius);
   padding: 20px;
-  box-shadow: var(--shadow);
   width: 100%;
   max-width: 480px;
   transition: transform var(--hover-duration) var(--easing), box-shadow var(--hover-duration) var(--easing);
