@@ -75,6 +75,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const card = document.createElement('div');
             card.classList.add('project-card', 'glass3d');
 
+            const homepageUrl = typeof repo.homepage === 'string' ? repo.homepage.trim() : '';
+            const projectUrl = homepageUrl || repo.html_url;
+
             const title = document.createElement('h3');
             title.textContent = repo.name;
 
@@ -98,13 +101,41 @@ document.addEventListener('DOMContentLoaded', () => {
             card.appendChild(meta);
             card.appendChild(link);
             // Add website link if provided in the repo details
-            if (repo.homepage) {
+            if (homepageUrl) {
                 const siteLink = document.createElement('a');
-                siteLink.href = repo.homepage;
+                siteLink.href = homepageUrl;
                 siteLink.target = '_blank';
                 siteLink.rel = 'noopener noreferrer';
-                siteLink.textContent = 'Visit website';
+                siteLink.textContent = 'Open Project';
                 card.appendChild(siteLink);
+            }
+
+            if (projectUrl) {
+                card.classList.add('is-clickable');
+                card.tabIndex = 0;
+                card.setAttribute('role', 'link');
+                card.setAttribute('aria-label', `Open ${repo.name} project in a new tab`);
+
+                const openProject = () => {
+                    window.open(projectUrl, '_blank', 'noopener,noreferrer');
+                };
+
+                card.addEventListener('click', (event) => {
+                    if (event.target.closest('a')) {
+                        return;
+                    }
+                    openProject();
+                });
+
+                card.addEventListener('keydown', (event) => {
+                    if (event.target !== card) {
+                        return;
+                    }
+                    if (event.key === 'Enter' || event.key === ' ') {
+                        event.preventDefault();
+                        openProject();
+                    }
+                });
             }
             projectsGrid.appendChild(card);
         });

@@ -370,6 +370,15 @@ section {
   font-weight: 600;
 }
 
+.project-card.is-clickable {
+  cursor: pointer;
+}
+
+.project-card.is-clickable:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+
 /* Blog Posts */
 .blog-posts-list {
   display: flex;
