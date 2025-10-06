@@ -65,7 +65,8 @@ GitHub repo              GitHub Action (Node 20)              GitHub Pages (stat
 | Card entry  | `opacity:0; translateY(50px); rotateX(15°)` ➜ `opacity:1; translateY(0); rotateX(0)` as card enters viewport (IntersectionObserver). |
 | Hover       | `transform:scale(1.03) rotateX(var(--rx)) rotateY(var(--ry)); box‑shadow` deepens. Mouse position maps to `--rx/ry` (≤7°).           |
 | Depth       | Title, description, meta have incremental `transform:translateZ()` to create parallax while tilting.                                 |
-| Fields      | Name, description (if any), `created_at`, `updated_at` (format `YYYY MM DD`), GitHub link (opens new tab).                           |
+| Fields      | Name, description (if any), `created_at`, `updated_at` (format `YYYY MM DD`), GitHub link (opens new tab), optional homepage link labelled **“Open Project”.** |
+| Card click  | Entire card is keyboard and pointer clickable; opens homepage when available, otherwise the GitHub repository, in a new tab (`noopener`,`noreferrer`). |
 | Error       | Show message *“Projects could not be loaded. View them on GitHub.”* + link.                                                          |
 
 ### 4.4  Blog Posts Section
