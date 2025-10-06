@@ -43,18 +43,17 @@ GitHub repo              GitHub Action (Node 20)              GitHub Pages (stat
 
 ### 4.1  Hero Section (`100vh`)
 
-| Element             | Behaviour                                                                                                                                                                                    |
-| ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Title `csutil.com`  | Letters appear **sequentially**: translateY(+40 px) ➜ 0 and rotateX(90°) ➜ 0° with 50 ms stagger.                                                                                            |
-| Tagline             | Fade‑in + small slide‑up 300 ms after last title letter.                                                                                                                                     |
-| CTA “Show Projects” | • Fade & slide‑up after tagline.<br>• **Hover**: tilts toward cursor (max 5° on X/Y), returns on `mouseleave`.<br>• **Click**: smooth‑scroll to Projects section (`scroll‑behavior:smooth`). |
+| Element             | Behaviour                                                                                                                                                                                                                                                                  |
+| ------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Title `csutil.com`  | Letters appear **sequentially**: translateY(+40 px) ➜ 0 and rotateX(90°) ➜ 0° with 50 ms stagger.                                                                                                                                                                            |
+| CTA “Show Projects” | • Fades & slides up after the title sequence.<br>• **Hover**: tilts toward cursor via `perspective(500px)` transform, reaching up to ~10° on each axis and maintaining a −3 px lift while hovered.<br>• **Mouseout** resets transform; **Click** smooth‑scrolls to Projects section. |
 
 ### 4.2  Animated Background
 
-| Asset                     | Details                                                                                                                                                                                                                         |
-| ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Blurred blobs             | 3 absolutely‑positioned `<div>`s below content (`z‑index:-1`). Each 300‑400 px circle with CSS `filter:blur(120px)`; colored gradients (violet, teal, indigo). Animate `transform: translate()` & `scale()` slowly (30 s loop). |
-| Decorative gradient tiles | Each project card gets an individual radial/linear gradient background that shifts position (`background‑position`) on a 20 s linear loop for a subtle fade.                                                                    |
+| Asset                     | Details                                                                                                                                                                                                                                                                                 |
+| ------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Blurred blobs             | 5 fixed-position `<div>`s below content (`z-index:1`). Each 500–750 px circle uses solid color fills defined in CSS variables, heavy blur (`filter: blur(280px)`), and alternating translate/scale keyframes ranging 25–35 s. An extra `.animated-blob` is injected for additional motion. |
+| Decorative gradient tiles | Every project card shares the same radial gradient overlay whose `background-position` shifts over 20 s for a subtle glow.                                                                                                                                                                |
 
 ### 4.3  Projects Section
 
@@ -63,7 +62,7 @@ GitHub repo              GitHub Action (Node 20)              GitHub Pages (stat
 | Data source | `https://api.github.com/users/cs-util-com/repos?per_page=100&sort=updated` (unauthenticated).                                        |
 | Grid        | CSS Grid with `grid-template-columns: repeat(auto‑fit,minmax(280px,1fr))`. Consistent card height by flex column layout.             |
 | Card entry  | `opacity:0; translateY(50px); rotateX(15°)` ➜ `opacity:1; translateY(0); rotateX(0)` as card enters viewport (IntersectionObserver). |
-| Hover       | `transform:scale(1.03) rotateX(var(--rx)) rotateY(var(--ry)); box‑shadow` deepens. Mouse position maps to `--rx/ry` (≤7°).           |
+| Hover       | `transform:scale(1.03) rotateX(var(--rx)) rotateY(var(--ry)); box‑shadow` deepens. Mouse position maps to `--rx/ry` (tilt reaches roughly ±14°). |
 | Depth       | Title, description, meta have incremental `transform:translateZ()` to create parallax while tilting.                                 |
 | Fields      | Name, description (if any), `created_at`, `updated_at` (format `YYYY MM DD`), GitHub link (opens new tab), optional homepage link labelled **“Open Project”.** |
 | Card click  | Entire card is keyboard and pointer clickable; opens homepage when available, otherwise the GitHub repository, in a new tab (`noopener`,`noreferrer`). |
@@ -75,17 +74,19 @@ GitHub repo              GitHub Action (Node 20)              GitHub Pages (stat
 | ----------- | -------------------------------------------------------------------------------------------- |
 | Data source | `/repo-manifest.json` → filter files matching `posts/\d{4}-\d{2}-\d{2}-.*\.html$`.           |
 | Sort        | Newest first by parsed date.                                                                 |
-| Card layout | 1 per row, max‑width 480 px center‑aligned. Rounded 8 px, `#1d1d1d` background, soft shadow. |
+| Card layout | 1 per row, max‑width 480 px center‑aligned. Rounded 8 px glassmorphism styling with transparent background and soft shadow. |
 | Display     | Title (clickable, whole card), date on second italic line.                                   |
 | Hover       | `translateY(-2px)` shadow intensifies.                                                       |
-| Error       | Show *“Blog posts unavailable. Browse directly on GitHub.”* + link to `/posts` folder.       |
+| Error       | When manifest fetch fails: *“Blog posts unavailable. Browse directly on GitHub.”* + link.<br>When manifest loads but no posts match the pattern: *“No blog posts found. Check back later…”* + link to `/posts`. |
 
 ---
 
 ## 5  GitHub Action – `manifest.yml`
 
+> **Note:** GitHub Action automation is not yet wired up. Run the manifest script manually for now (`npm run build-manifest`). A workflow matching this section remains a TODO.
+
 ```yaml
-name: Build repo‑manifest
+name: Build repo-manifest (planned)
 on:
   push:
     branches: [main]
@@ -96,7 +97,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
-        with: {node-version: '20'}
+        with: { node-version: '20' }
       - name: Generate manifest
         run: node scripts/build-manifest.js
       - name: Commit & push
@@ -107,11 +108,12 @@ jobs:
           push: true
 ```
 
-### 5.1  `build-manifest.js` Requirements
+### 5.1  `build-manifest.js` Behaviour (current)
 
-* Recursively list **all** content via GitHub REST `repos.getContent`.
-* Output array of `{ path, name, sha, size, download_url, type }`.
-* `JSON.stringify(data,null,2)` to `repo-manifest.json`.
+* Uses Octokit’s REST client (`@octokit/rest`) with unauthenticated calls to fetch repository contents.
+* Recursively walks directories and collects **files** (`type === 'file'`) with `{ path, name, sha, size, download_url, type }`.
+* Generates `repo-manifest.json` in the repository root via `JSON.stringify(data, null, 2)`.
+* Includes optional dummy post generation when `NODE_ENV=local_test`.
 
 ---
 
@@ -150,20 +152,8 @@ jobs:
 
 ---
 
-## 9  Testing & Quality Targets
-
-| Area          | Tool                  | Passing Criteria                                                                                |
-| ------------- | --------------------- | ----------------------------------------------------------------------------------------------- |
-| Performance   | Lighthouse Mobile     | ≥ 90 overall.                                                                                   |
-| Accessibility | Pa11y                 | No WCAG 2.1 AA errors.                                                                          |
-| Unit          | Jest (build‑manifest) | 100% happy path + edge cases.                                                                   |
-| E2E           | Cypress               | Hero animation runs, project cards load, blog list matches manifest count, error states render. |
-
----
-
-## 10  Future Enhancements
+## 9  Future Enhancements
 
 * Add Contact / social section.
 * Light‑mode toggle.
-* Pagination for projects & posts when counts grow large.
 * Compress & upload manifest to Release when size >5 MB.
